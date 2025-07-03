@@ -1,31 +1,66 @@
+/* RESET de estilos para garantir consistência */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* Estilo geral do corpo */
 body {
-    font-family: 'Arial', sans-serif;
-    background: #121212;
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg, #0a0a0a, #1d1d1d);
+    color: #fff;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    color: #fff;
     overflow: hidden;
+    text-align: center;
+    transition: background 0.5s ease;
+    font-size: 18px;
 }
 
+/* Cabeçalho - animação de entrada */
+h1 {
+    font-size: 50px;
+    color: #34e89e;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+    letter-spacing: 8px;
+    animation: fadeIn 2s ease-in-out;
+    text-shadow: 0 4px 10px rgba(0, 255, 255, 0.1);
+}
+
+/* Animação de Fade-In */
+@keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(-30px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Contêiner principal de flashcards */
 .container {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-bottom: 50px;
+    animation: scaleUp 1.5s ease-out;
 }
 
+/* Animação de escala suave ao aparecer */
+@keyframes scaleUp {
+    0% { transform: scale(0.5); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Flashcard */
 .flashcard {
-    width: 250px;
-    height: 350px;
-    perspective: 1000px;
-    transition: transform 0.6s;
+    width: 280px;
+    height: 400px;
+    perspective: 1500px;
+    cursor: pointer;
+    transition: transform 0.7s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
 
 .flashcard .card-content {
@@ -33,13 +68,14 @@ body {
     height: 100%;
     position: relative;
     transform-style: preserve-3d;
-    transition: transform 0.6s;
+    transition: transform 0.6s ease-in-out;
 }
 
 .flashcard.flipped .card-content {
     transform: rotateY(180deg);
 }
 
+/* Parte da frente do flashcard */
 .card-front, .card-back {
     position: absolute;
     width: 100%;
@@ -48,33 +84,95 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
     text-align: center;
+    transition: all 0.4s ease-in-out;
 }
 
+/* Estilo da frente do flashcard */
 .card-front {
-    background: linear-gradient(45deg, #0f4b5c, #0a9d9f);
+    background: linear-gradient(45deg, #ff6ec7, #ff9a8b);
     color: #fff;
-    font-size: 20px;
-    border: 2px solid #0e4c5a;
-    transition: transform 0.6s;
+    font-size: 22px;
+    border: 3px solid #ff6ec7;
 }
 
+/* Estilo do verso do flashcard */
 .card-back {
     background: linear-gradient(45deg, #34e89e, #0f3443);
     color: #fff;
     font-size: 20px;
     transform: rotateY(180deg);
-    border: 2px solid #0f6f72;
+    border: 3px solid #34e89e;
 }
 
+/* Efeito de zoom ao passar o mouse sobre o card */
 .flashcard:hover {
-    transform: scale(1.05);
+    transform: scale(1.1) rotate(5deg);
 }
 
+/* Textos nas faces do flashcard */
 .card-front h2, .card-back h2 {
     font-size: 24px;
     font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.card-front h2 {
+    color: #fff;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+}
+
+.card-back h2 {
+    color: #fff;
+    text-shadow: 0 0 10px rgba(0, 255, 0, 0.7);
+}
+
+/* Rodapé */
+.footer {
+    color: #bbb;
+    margin-top: 50px;
+    font-size: 18px;
+    letter-spacing: 2px;
+}
+
+.footer span {
+    font-weight: bold;
+    color: #34e89e;
+}
+
+/* Botão para reiniciar os flashcards */
+.reload-button {
+    background-color: #0f3443;
+    color: #fff;
+    font-size: 20px;
+    padding: 12px 30px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border: none;
+    margin-top: 20px;
+}
+
+.reload-button:hover {
+    background-color: #34e89e;
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .flashcard {
+        width: 220px;
+        height: 300px;
+    }
+
+    h1 {
+        font-size: 35px;
+    }
 }

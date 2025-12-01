@@ -1,42 +1,266 @@
-<div class="container">
-    <div class="flashcard">
-        <div class="card-content">
-            <div class="card-front">
-                <h2 class="question">O que é uma variável em programação?</h2>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcards</title>
+    <style>
+        /* RESET de estilos para garantir consistência */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Estilo geral do corpo */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #000;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            text-align: center;
+            transition: background 0.5s ease;
+            font-size: 18px;
+        }
+
+        /* Efeito de fundo neon */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 20%, #ff00ff 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, #00ffff 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, #00ff00 0%, transparent 40%);
+            mix-blend-mode: screen;
+            opacity: 0.3;
+            animation: neonGlow 15s infinite alternate;
+            z-index: -1;
+        }
+
+        @keyframes neonGlow {
+            0% {
+                transform: scale(1) rotate(0deg);
+                opacity: 0.3;
+            }
+            50% {
+                transform: scale(1.1) rotate(5deg);
+                opacity: 0.4;
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 0.3;
+            }
+        }
+
+        /* Cabeçalho - animação de entrada */
+        h1 {
+            font-size: 50px;
+            color: #39ff14; /* Verde neon */
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            letter-spacing: 8px;
+            animation: fadeIn 2s ease-in-out;
+            text-shadow: 0 0 10px #39ff14, 0 0 20px #39ff14, 0 0 40px #39ff14;
+        }
+
+        /* Animação de Fade-In */
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(-30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Contêiner principal de flashcards */
+        .container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-bottom: 50px;
+            animation: scaleUp 1.5s ease-out;
+        }
+
+        /* Animação de escala suave ao aparecer */
+        @keyframes scaleUp {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Flashcard */
+        .flashcard {
+            width: 280px;
+            height: 400px;
+            perspective: 1500px;
+            cursor: pointer;
+            transition: transform 0.7s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        .flashcard .card-content {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s ease-in-out;
+        }
+
+        .flashcard.flipped .card-content {
+            transform: rotateY(180deg);
+        }
+
+        /* Parte da frente do flashcard */
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+            text-align: center;
+            transition: all 0.4s ease-in-out;
+            border: 3px solid;
+        }
+
+        /* Estilo da frente do flashcard */
+        .card-front {
+            background-color: #1a1a1a;
+            color: #fff;
+            font-size: 22px;
+            border-color: #ff00ff; /* Rosa neon */
+            text-shadow: 0 0 5px #ff00ff;
+        }
+
+        /* Estilo do verso do flashcard */
+        .card-back {
+            background-color: #1a1a1a;
+            color: #fff;
+            font-size: 20px;
+            transform: rotateY(180deg);
+            border-color: #00ffff; /* Ciano neon */
+            text-shadow: 0 0 5px #00ffff;
+        }
+
+        /* Efeito de zoom ao passar o mouse sobre o card */
+        .flashcard:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        /* Textos nas faces do flashcard */
+        .card-front h2, .card-back h2 {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        /* Rodapé */
+        .footer {
+            color: #bbb;
+            margin-top: 50px;
+            font-size: 18px;
+            letter-spacing: 2px;
+        }
+
+        .footer span {
+            font-weight: bold;
+            color: #39ff14;
+        }
+
+        /* Botão para reiniciar os flashcards */
+        .reload-button {
+            background-color: #1a1a1a;
+            color: #39ff14;
+            font-size: 20px;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+            border: 2px solid #39ff14;
+            margin-top: 20px;
+            text-shadow: 0 0 5px #39ff14;
+        }
+
+        .reload-button:hover {
+            background-color: #39ff14;
+            color: #000;
+            box-shadow: 0 0 10px #39ff14, 0 0 20px #39ff14, 0 0 30px #39ff14;
+        }
+
+        /* Responsividade para telas menores */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .flashcard {
+                width: 220px;
+                height: 300px;
+            }
+
+            h1 {
+                font-size: 35px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Flashcards</h1>
+    <div class="container">
+        <div class="flashcard">
+            <div class="card-content">
+                <div class="card-front">
+                    <h2 class="question">O que é uma variável em programação?</h2>
+                </div>
+                <div class="card-back">
+                    <h2 class="answer">Um espaço na memória para armazenar valores.</h2>
+                </div>
             </div>
-            <div class="card-back">
-                <h2 class="answer">É um espaço na memória usado para armazenar valores.</h2>
+        </div>
+        <div class="flashcard">
+            <div class="card-content">
+                <div class="card-front">
+                    <h2 class="question">O que é um loop?</h2>
+                </div>
+                <div class="card-back">
+                    <h2 class="answer">Uma estrutura que repete instruções enquanto uma condição for verdadeira.</h2>
+                </div>
+            </div>
+        </div>
+        <div class="flashcard">
+            <div class="card-content">
+                <div class="card-front">
+                    <h2 class="question">O que é uma função?</h2>
+                </div>
+                <div class="card-back">
+                    <h2 class="answer">Um bloco de código que executa uma tarefa específica e pode ser reutilizado.</h2>
+                </div>
+            </div>
+        </div>
+        <div class="flashcard">
+            <div class="card-content">
+                <div class="card-front">
+                    <h2 class="question">O que aprendi em programação este ano?</h2>
+                </div>
+                <div class="card-back">
+                    <h2 class="answer">Aprendi a programar no GitHub.</h2>
+                </div>
             </div>
         </div>
     </div>
-    <div class="flashcard">
-        <div class="card-content">
-            <div class="card-front">
-                <h2 class="question">O que é um loop?</h2>
-            </div>
-            <div class="card-back">
-                <h2 class="answer">É uma estrutura que repete instruções enquanto uma condição for verdadeira.</h2>
-            </div>
-        </div>
+
+    <div class="footer">
+        <p>Feito por <span>Douglas</span> - 2025</p>
     </div>
-    <div class="flashcard">
-        <div class="card-content">
-            <div class="card-front">
-                <h2 class="question">O que é uma função?</h2>
-            </div>
-            <div class="card-back">
-                <h2 class="answer">Um bloco de código que executa uma tarefa específica e pode ser reutilizado.</h2>
-            </div>
-        </div>
-    </div>
-    <div class="flashcard">
-        <div class="card-content">
-            <div class="card-front">
-                <h2 class="question">O que aprendi em programação este ano?</h2>
-            </div>
-            <div class="card-back">
-                <h2 class="answer">Aprendi a programar no GitHub.</h2>
-            </div>
-        </div>
-    </div>
-</div>
+
+    <div class="button-container">
+        <button class="reload-button" onclick="window.location.reload();">Reiniciar Flashcards</button>
